@@ -97,4 +97,5 @@ blog: http://blog.leetsoft.com/
 irc: xal
 
 Enjoy,
-The Typo team
+The Typo team (murmuring-harbor-5014.herokuapp.com/admin/lipQTsZ)
+The Typo team (localhost:3000/admin/sgvcGV7)
