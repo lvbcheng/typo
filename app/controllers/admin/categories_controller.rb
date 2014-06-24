@@ -24,6 +24,7 @@ class Admin::CategoriesController < Admin::BaseController
   private
 
   def new_or_edit
+    # will be used by new.html.erb to populate the categories table
     @categories = Category.find(:all)
     if params[:id].nil?
       @category = Category.new

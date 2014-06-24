@@ -1,3 +1,12 @@
+# From railroady
+# id :integer
+# name :string
+# position :integer
+# permalink :string
+# keywords :text
+# description :text
+# parent_id :integer    <---- foreign key to ???
+
 class Category < ActiveRecord::Base
   acts_as_list
   acts_as_tree :order=>"name"
