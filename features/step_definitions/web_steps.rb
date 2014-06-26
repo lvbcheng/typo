@@ -55,14 +55,14 @@ And /^I am logged into the admin panel$/ do
 end
 
 # Single-line step scoper
-When /^(.*) within (.*[^:])$/ do |step, parent|
-  puts "parent: #{parent}, step: #{step}"
-  with_scope(parent) { When step }
+When /^(.*) within (.*[^:])$/ do |s, parent|
+  puts "parent: #{parent}, step: #{s}"
+  with_scope(parent) { step s }
 end
 
 # Multi-line step scoper
-When /^(.*) within (.*[^:]):$/ do |step, parent, table_or_string|
-  with_scope(parent) { When "#{step}:", table_or_string }
+When /^(.*) within (.*[^:]):$/ do |s, parent, table_or_string|
+  with_scope(parent) { step "#{s}:", table_or_string }
 end
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
@@ -277,3 +277,15 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
+
+Then /^(?:|I )should see all the categories$/ do
+  category_names = @categories_created.inject([]) { |a,c| a << c['name']; a }
+  category_names.each do |c|
+    page.should have_content(c)
+  end
+end
+
+Then /^(?:|I )should see the category "(.*)"$/ do |cname|
+  page.should have_content(cname)
+end
+
