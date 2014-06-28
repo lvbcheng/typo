@@ -24,6 +24,11 @@ module NavigationHelpers
     when /^the edit category page for "(.*)"$/
       c_id = Category.find_by_name($1).id
       "/admin/categories/edit/#{c_id}"
+
+    when /^the edit article page for "(.*)"$/
+      c_id = Article.find_by_title($1).id
+      "/admin/content/edit/#{c_id}"
+
     when /^the login page$/
       '/accounts/login'
 

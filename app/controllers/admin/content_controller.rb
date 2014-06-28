@@ -7,6 +7,34 @@ class Admin::ContentController < Admin::BaseController
 
   cache_sweeper :blog_sweeper
 
+  def merge
+    @id = params[:id]
+    merge_target_id = params[:merge_target_id]
+    if merge_target_id.to_i.zero?
+      flash[:notice] = "Merge requires an id of an article"
+      redirect_to :action => 'edit', :id => @id
+      return
+    end
+
+    if @id == merge_target_id
+      flash[:notice] = "Cannot merge an article with itself"
+      redirect_to :action => 'edit', :id => @id
+      return
+    end
+
+    @target_article = Article.find_by_id merge_target_id
+
+    if @target_article.nil?
+      flash[:notice] = "Merge requires an id of an existing article"
+      redirect_to :action => 'edit', :id => @id
+      return
+    end
+
+    flash[:notice] = "Merge not implemented"
+    redirect_to :action => 'edit', :id => @id
+    return
+  end
+
   def auto_complete_for_article_keywords
     @items = Tag.find_with_char params[:article][:keywords].strip
     render :inline => "<%= raw auto_complete_result @items, 'name' %>"
@@ -143,11 +171,24 @@ class Admin::ContentController < Admin::BaseController
   def new_or_edit
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
-    debugger
+
     @article = Article.get_or_build_article(id)
     @article.text_filter = current_user.text_filter if current_user.simple_editor?
 
     @post_types = PostType.find(:all)
+
+    # merge request
+    if params.has_key? :merge_target_id
+      debugger
+      # error cases for merge include
+      # if no merge_target_id
+      if params[:merge_target_id].to_i.zero?
+        flash[:notice] = 'Merge error: please specify a valid target id'
+        redirect_to :action => 'edit', :id => id
+        return
+      end
+    end
+
     if request.post?
       if params[:article][:draft]
         get_fresh_or_existing_draft_for_article
@@ -185,16 +226,14 @@ class Admin::ContentController < Admin::BaseController
     render 'new'
   end
 
-  def merge
-    debugger
-  end
-
-  def set_the_flash
+  def set_the_flash(id = 0)
     case params[:action]
     when 'new'
       flash[:notice] = _('Article was successfully created')
     when 'edit'
       flash[:notice] = _('Article was successfully updated.')
+    when 'merge'
+      flash[:notice] = _('Article was successfully merged with #{id}')
     else
       raise "I don't know how to tidy up action: #{params[:action]}"
     end

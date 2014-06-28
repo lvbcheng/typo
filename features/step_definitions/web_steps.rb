@@ -90,6 +90,10 @@ When /^(?:|I )fill in "([^"]*)" for "([^"]*)"$/ do |value, field|
   fill_in(field, :with => value)
 end
 
+When /^(?:|I )fill in "([^"]*)" with the id for "([^"]*)"$/ do |field, title|
+  fill_in(field, :with => Article.find_by_title(title).id)
+end
+
 # Use this to fill in an entire form with data from a table. Example:
 #
 #   When I fill in the following:
