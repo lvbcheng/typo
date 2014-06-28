@@ -173,7 +173,6 @@ class Admin::ContentController < Admin::BaseController
 
     # merge request
     if params.has_key? :merge_target_id
-      debugger
       # error cases for merge include
       # if no merge_target_id
       if params[:merge_target_id].to_i.zero?
