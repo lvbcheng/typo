@@ -10,28 +10,22 @@ class Admin::ContentController < Admin::BaseController
   def merge
     @id = params[:id]
     merge_target_id = params[:merge_target_id]
-    if merge_target_id.to_i.zero?
-      flash[:notice] = "Merge requires an id of an article"
+
+    @source_article = Article.find_by_id(@id)
+
+    begin
+      @source_article.merge(merge_target_id)
+    rescue Article::InvalidIDError
+      flash[:notice] = "Merge requires a valid id"
       redirect_to :action => 'edit', :id => @id
       return
-    end
-
-    if @id == merge_target_id
+    rescue Article::SelfMergeError
       flash[:notice] = "Cannot merge an article with itself"
       redirect_to :action => 'edit', :id => @id
       return
     end
 
-    @target_article = Article.find_by_id merge_target_id
-
-    if @target_article.nil?
-      flash[:notice] = "Merge requires an id of an existing article"
-      redirect_to :action => 'edit', :id => @id
-      return
-    end
-
-    flash[:notice] = "Merge not implemented"
-    redirect_to :action => 'edit', :id => @id
+    redirect_to :action => 'index'
     return
   end
 

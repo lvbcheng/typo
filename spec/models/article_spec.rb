@@ -184,25 +184,25 @@ describe Article do
   ### XXX: Should we have a test here?
   it "test_send_multiple_pings" do
   end
-  
+
   describe "Testing redirects" do
     it "a new published article gets a redirect" do
       a = Article.create(:title => "Some title", :body => "some text", :published => true)
       a.redirects.first.should_not be_nil
       a.redirects.first.to_path.should == a.permalink_url
     end
-    
-    it "a new unpublished article should not get a redirect" do 
+
+    it "a new unpublished article should not get a redirect" do
       a = Article.create(:title => "Some title", :body => "some text", :published => false)
       a.redirects.first.should be_nil
     end
-    
+
     it "Changin a published article permalink url should only change the to redirection" do
       a = Article.create(:title => "Some title", :body => "some text", :published => true)
       a.redirects.first.should_not be_nil
       a.redirects.first.to_path.should == a.permalink_url
       r  = a.redirects.first.from_path
-      
+
       a.permalink = "some-new-permalink"
       a.save
       a.redirects.first.should_not be_nil
@@ -250,10 +250,11 @@ describe Article do
   end
 
   it "test_find_published" do
+    articles_published = Article.find_published.size
     article = Factory(:article, :title => 'Article 1!', :state => 'published')
     Factory(:article, :published => false, :state => 'draft')
     @articles = Article.find_published
-    assert_equal 1, @articles.size
+    assert_equal articles_published + 1, @articles.size
     @articles = Article.find_published(:all, :conditions => "title = 'Article 1!'")
     assert_equal [article], @articles
   end
@@ -420,7 +421,7 @@ describe Article do
 
       # FIXME: This tests nothing, really.
       before :each do
-        @articles = Article.search('hello world')
+        @articles = Article.search('hello world huh')
       end
 
       it 'should be empty' do
@@ -513,12 +514,12 @@ describe Article do
 
       @article_four_months_ago = Factory(:article, :published_at => 4.month.ago)
       @article_2_four_months_ago = Factory(:article, :published_at => 4.month.ago)
-
       @article_two_year_ago = Factory(:article, :published_at => 2.year.ago)
       @article_2_two_year_ago = Factory(:article, :published_at => 2.year.ago)
     end
 
     it 'should return all content for the year if only year sent' do
+      # the following appears to be an extraneous article - Beethoven
       Article.published_at_like(2.year.ago.strftime('%Y')).map(&:id).sort.should == [@article_two_year_ago.id, @article_2_two_year_ago.id].sort
     end
 
@@ -571,7 +572,7 @@ describe Article do
     describe "#find_by_permalink" do
       it "uses UTC to determine correct day" do
         @a.save
-        a = Article.find_by_permalink :year => 2011, :month => 2, :day => 21, :permalink => 'a-big-article' 
+        a = Article.find_by_permalink :year => 2011, :month => 2, :day => 21, :permalink => 'a-big-article'
         a.should == @a
       end
     end
@@ -592,7 +593,7 @@ describe Article do
     describe "#find_by_permalink" do
       it "uses UTC to determine correct day" do
         @a.save
-        a = Article.find_by_permalink :year => 2011, :month => 2, :day => 22, :permalink => 'a-big-article' 
+        a = Article.find_by_permalink :year => 2011, :month => 2, :day => 22, :permalink => 'a-big-article'
         a.should == @a
       end
     end
@@ -630,5 +631,6 @@ describe Article do
     end
 
   end
+
 end
 

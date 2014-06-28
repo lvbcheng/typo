@@ -98,4 +98,4 @@ irc: xal
 
 Enjoy,
 The Typo team (murmuring-harbor-5014.herokuapp.com/admin/lipQTsZ)
-The Typo team (localhost:3000/admin/sgvcGV7)
+The Typo team (localhost:3000/admin/5q5QNzq)

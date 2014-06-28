@@ -25,6 +25,9 @@ class Article < Content
 
   has_many :comments,   :dependent => :destroy, :order => "created_at ASC" do
 
+  class InvalidIDError < RuntimeError ; end
+  class SelfMergeError < RuntimeError ; end
+
     # Get only ham or presumed_ham comments
     def ham
       find :all, :conditions => {:state => ["presumed_ham", "ham"]}
@@ -80,6 +83,25 @@ class Article < Content
     Article.exists?({:parent_id => self.id})
   end
 
+  def merge(id)
+    target_article = Article.find_by_id(id)
+    if target_article.nil?
+      raise(Article::InvalidIDError)
+    end
+
+    if self.id == id
+      raise(Article::SelfMergeError)
+    end
+
+    self.body = self.body + target_article.body
+
+    target_article.feedback.all.each { |c| self.feedback << c }
+    target_article.comments.all.each { |c| self.comments << c }
+
+    self.save
+    target_article.destroy
+  end
+
   attr_accessor :draft, :keywords
 
   has_state(:state,
@@ -104,10 +126,10 @@ class Article < Content
     end
 
     def search_with_pagination(search_hash, paginate_hash)
-      
+
       state = (search_hash[:state] and ["no_draft", "drafts", "published", "withdrawn", "pending"].include? search_hash[:state]) ? search_hash[:state] : 'no_draft'
-      
-      
+
+
       list_function  = ["Article.#{state}"] + function_search_no_draft(search_hash)
 
       if search_hash[:category] and search_hash[:category].to_i > 0
