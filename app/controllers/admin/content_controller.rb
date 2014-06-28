@@ -1,5 +1,4 @@
 require 'base64'
-require 'debugger'
 
 module Admin; end
 class Admin::ContentController < Admin::BaseController
