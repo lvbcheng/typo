@@ -24,6 +24,7 @@ class Admin::ContentController < Admin::BaseController
       return
     end
 
+    set_the_flash
     redirect_to :action => 'index'
     return
   end
@@ -170,17 +171,6 @@ class Admin::ContentController < Admin::BaseController
 
     @post_types = PostType.find(:all)
 
-    # merge request
-    if params.has_key? :merge_target_id
-      # error cases for merge include
-      # if no merge_target_id
-      if params[:merge_target_id].to_i.zero?
-        flash[:notice] = 'Merge error: please specify a valid target id'
-        redirect_to :action => 'edit', :id => id
-        return
-      end
-    end
-
     if request.post?
       if params[:article][:draft]
         get_fresh_or_existing_draft_for_article
@@ -218,7 +208,7 @@ class Admin::ContentController < Admin::BaseController
     render 'new'
   end
 
-  def set_the_flash(id = 0)
+  def set_the_flash
     case params[:action]
     when 'new'
       flash[:notice] = _('Article was successfully created')
