@@ -52,9 +52,10 @@ class Admin::DashboardController < Admin::BaseController
 
   def inbound_links
     url = "http://www.google.com/search?q=link:#{this_blog.base_url}&tbm=blg&output=rss"
-    open(url) do |http|
-      @inbound_links = parse_rss(http.read).reverse
-    end
+    @inbound_links = nil
+#    open(url) do |http|
+#      @inbound_links = parse_rss(http.read).reverse
+#    end
   rescue
     @inbound_links = nil
   end
@@ -74,18 +75,19 @@ class Admin::DashboardController < Admin::BaseController
 
   def get_typo_version
     url = "http://blog.typosphere.org/version.txt"
-    open(url) do |http|
-      @typo_version = http.read[0..5]
-    end
+#    open(url) do |http|
+#      @typo_version = http.read[0..5]
+#    end
   rescue
     @typo_version = nil
   end
 
   def typo_dev
     url = "http://blog.typosphere.org/articles.rss"
-    open(url) do |http|
-      @typo_links = parse_rss(http.read)[0..4]
-    end
+    @typo_links = nil
+#    open(url) do |http|
+#      @typo_links = parse_rss(http.read)[0..4]
+#    end
   rescue
     @typo_links = nil
   end

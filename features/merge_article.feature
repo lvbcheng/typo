@@ -5,7 +5,7 @@ Feature: Merge Articles
 
   Background:
   Given the blog is set up
-  And I am logged into the admin panel
+  And I am logged in as "admin" with password "aaaaaaaa"
   And the following articles exist:
       | title | type    | author  | body    | name | post_type |
       | G1    | Article | Mr Typo | Welcome | nil  | read      |
@@ -47,7 +47,7 @@ Feature: Merge Articles
   When I press "Merge"
   Then I should be on the edit article page for "G3"
 
-  Scenario: I should gracefully fail when merging without specifying a target id
+  Scenario: I should gracefully fail when merging with a bogus target id
   When I fill in "merge_with" with "foobar"
   And I press "Merge"
   Then I should be on the edit article page for "G3"

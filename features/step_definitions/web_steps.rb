@@ -40,18 +40,23 @@ Given /^the blog is set up$/ do
                 :profile_id => 1,
                 :name => 'admin',
                 :state => 'active'})
+   User.create!({:login => 'HerbCain',
+                 :password => 'bbbbb',
+                 :email => 'herb@snow.com',
+                 :profile_id => 2,
+                  :name => 'Herb'})
 end
 
-And /^I am logged into the admin panel$/ do
+And /^I am logged in as "(.*)" with password "(.*)"$/ do |uname, pwd|
   visit '/accounts/login'
-  fill_in 'user_login', :with => 'admin'
-  fill_in 'user_password', :with => 'aaaaaaaa'
+  fill_in 'user_login', :with => uname
+  fill_in 'user_password', :with => pwd
   click_button 'Login'
-  if page.respond_to? :should
-    page.should have_content('Login successful')
-  else
-    assert page.has_content?('Login successful')
-  end
+#  if page.respond_to? :should
+#    page.should have_content('Login successful')
+#  else
+#    assert page.has_content?('Login successful')
+#  end
 end
 
 # Single-line step scoper
