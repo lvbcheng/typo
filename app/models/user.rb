@@ -168,6 +168,10 @@ class User < ActiveRecord::Base
     profile.label == Profile::ADMIN
   end
 
+  def nonadmin?
+    profile.label != Profile::ADMIN
+  end
+
   protected
 
   # Apply SHA1 encryption to the supplied password.

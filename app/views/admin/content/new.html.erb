@@ -2,4 +2,4 @@
 
 <%= render "admin/shared/edit", { :form_type => "article", :form_action => { :action => "new", :id => @article.id , :class => ('autosave')} } %>
 
-<%= render "merge", { :form_type => "article", :form_action => { :action => "merge", :id => @article.id , :class => ('autosave')} } unless @article.id.nil? %>
+<%= render "merge", { :form_type => "article", :form_action => { :action => "merge", :id => @article.id , :class => ('autosave')} } if @merge_form == true %>

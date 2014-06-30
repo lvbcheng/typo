@@ -7,6 +7,12 @@ class Admin::ContentController < Admin::BaseController
   cache_sweeper :blog_sweeper
 
   def merge
+    if current_user.nonadmin?
+      flash[:notice] = 'Only Typo administrators can merge an article'
+      redirect_to :action => 'index'
+      return
+    end
+
     if params[:id].nil?
       flash[:notice] = "Cannot merge a new article"
       redirect_to :action => 'new'
@@ -173,7 +179,6 @@ class Admin::ContentController < Admin::BaseController
     id = params[:article][:id] if params[:article] && params[:article][:id]
     @article = Article.get_or_build_article(id)
     @article.text_filter = current_user.text_filter if current_user.simple_editor?
-
     @post_types = PostType.find(:all)
 
     if request.post?
@@ -210,6 +215,13 @@ class Admin::ContentController < Admin::BaseController
     @images = Resource.images_by_created_at.page(params[:page]).per(10)
     @resources = Resource.without_images_by_filename
     @macros = TextFilter.macro_filters
+
+    if (@article.id.nil? or current_user.nonadmin?)
+      @merge_form = false
+    else
+      @merge_form = true
+    end
+
     render 'new'
   end
 
