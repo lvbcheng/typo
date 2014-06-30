@@ -7,6 +7,12 @@ class Admin::ContentController < Admin::BaseController
   cache_sweeper :blog_sweeper
 
   def merge
+    if params[:id].nil?
+      flash[:notice] = "Cannot merge a draft article"
+      redirect_to :action => 'new'
+      return
+    end
+
     @id = params[:id]
     merge_target_id = params[:merge_target_id]
 
