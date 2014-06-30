@@ -13,7 +13,7 @@ class Admin::ContentController < Admin::BaseController
     @source_article = Article.find_by_id(@id)
 
     begin
-      @source_article.merge(merge_target_id)
+      @source_article.merge(merge_target_id.to_i)
     rescue Article::InvalidIDError
       flash[:notice] = "Merge requires a valid id"
       redirect_to :action => 'edit', :id => @id
@@ -24,7 +24,7 @@ class Admin::ContentController < Admin::BaseController
       return
     end
 
-    set_the_flash
+    set_the_flash(@source_article.title)
     redirect_to :action => 'index'
     return
   end
@@ -165,7 +165,6 @@ class Admin::ContentController < Admin::BaseController
   def new_or_edit
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
-
     @article = Article.get_or_build_article(id)
     @article.text_filter = current_user.text_filter if current_user.simple_editor?
 
@@ -208,14 +207,14 @@ class Admin::ContentController < Admin::BaseController
     render 'new'
   end
 
-  def set_the_flash
+  def set_the_flash(id = nil)
     case params[:action]
     when 'new'
       flash[:notice] = _('Article was successfully created')
     when 'edit'
       flash[:notice] = _('Article was successfully updated.')
     when 'merge'
-      flash[:notice] = _('Article was successfully merged with #{id}')
+      flash[:notice] = _('Article #{id} was successfully merged with a different article')
     else
       raise "I don't know how to tidy up action: #{params[:action]}"
     end
