@@ -8,18 +8,18 @@ class Admin::ContentController < Admin::BaseController
 
   def merge
     if params[:id].nil?
-      flash[:notice] = "Cannot merge a draft article"
+      flash[:notice] = "Cannot merge a new article"
       redirect_to :action => 'new'
       return
     end
 
     @id = params[:id]
-    merge_target_id = params[:merge_target_id]
+    merge_with = params[:merge_with]
 
     @source_article = Article.find_by_id(@id)
 
     begin
-      @source_article.merge(merge_target_id.to_i)
+      @source_article.merge(merge_with.to_i)
     rescue Article::InvalidIDError
       flash[:notice] = "Merge requires a valid id"
       redirect_to :action => 'edit', :id => @id
