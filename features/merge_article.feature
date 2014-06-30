@@ -20,24 +20,24 @@ Feature: Merge Articles
   And I should see "Merge Articles"
 
   Scenario: With a valid id, I should be able to press "Merge"
-  When I fill in "merge_target_id" with the id for "G4"
+  When I fill in "merge_with" with the id for "G4"
   And I press "Merge"
   And I follow "G3"
   Then I should see "Kotter!!!"
 
   Scenario: I should gracefully fail when merging with target id of the article
-  When I fill in "merge_target_id" with the id for "G3"
+  When I fill in "merge_with" with the id for "G3"
   And I press "Merge"
   Then I should be on the edit article page for "G3"
 
   Scenario: Successfully merge two articles
-  When I fill in "merge_target_id" with the id for "G4"
+  When I fill in "merge_with" with the id for "G4"
   And I press "Merge"
   And I follow "G3"
   Then I should see "Kotter!!!"
 
   Scenario: After merging two articles, other articles should still be there
-  When I fill in "merge_target_id" with the id for "G4"
+  When I fill in "merge_with" with the id for "G4"
   And I press "Merge"
   Then I should see "G1"
   And I should see "G2"
@@ -48,7 +48,7 @@ Feature: Merge Articles
   Then I should be on the edit article page for "G3"
 
   Scenario: I should gracefully fail when merging without specifying a target id
-  When I fill in "merge_target_id" with "foobar"
+  When I fill in "merge_with" with "foobar"
   And I press "Merge"
   Then I should be on the edit article page for "G3"
 
