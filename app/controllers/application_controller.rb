@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   def load_lang
     Localization.lang = this_blog.lang
-    # Check if for example "en_UK" locale exesists if not check for "en" locale
+    # Check if for example "en_UK" locale esists if not check for "en" locale
     if I18n.available_locales.include?(this_blog.lang.to_sym)
       I18n.locale = this_blog.lang
     elsif I18n.available_locales.include?(this_blog.lang[0..1].to_sym)

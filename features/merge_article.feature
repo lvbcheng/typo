@@ -13,6 +13,12 @@ Feature: Merge Articles
       | G3    | Article | Dr Typo | Kotter  | nil  | read      |
       | G4    | Article | Dr Typo | !!!     | nil  | read      |
 
+  And the following comments exist:
+      | author  | body                    | user   | article    | state |
+      | admin   | Great article!          | admin  | G1         | ham   |
+      | Ms Typo | What? You drunk?        | admin  | G1         | ham   |
+      | Herb    | Herb Cain thumbs up!    | admin  | G2         | ham   |     
+
   And I follow "All Articles" within "div.sidebar"
   And I follow "G3"
 

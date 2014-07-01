@@ -29,6 +29,10 @@ module NavigationHelpers
       c_id = Article.find_by_title($1).id
       "/admin/content/edit/#{c_id}"
 
+    when /^the feedback page for article "(.*)"$/
+      c_id = Article.find_by_title($1).id
+      "/admin/feedback/article/#{c_id}"
+
     when /^the login page$/
       '/accounts/login'
 
