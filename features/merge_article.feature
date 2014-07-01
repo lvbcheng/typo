@@ -36,7 +36,12 @@ Feature: Merge Articles
   And I press "Merge"
   Then I should be on the edit article page for "G3"
 
-  Scenario: Flash should be shown i successful merge
+  Scenario: The flash should warn when merging with target id of the article
+  When I fill in "merge_with" with the id for "G3"
+  And I press "Merge"
+  Then I should see "Cannot merge an article with itself"
+
+  Scenario: Flash should be shown on successful merge
   When I fill in "merge_with" with the id for "G4"
   And I press "Merge"
   Then I should see "G3 was successfully merged with a different article" in the flash

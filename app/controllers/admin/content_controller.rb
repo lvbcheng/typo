@@ -8,13 +8,13 @@ class Admin::ContentController < Admin::BaseController
 
   def merge
     if current_user.nonadmin?
-      flash[:notice] = 'Only Typo administrators can merge an article'
+      flash[:notice] = _("Only Typo administrators can merge an article")
       redirect_to :action => 'index'
       return
     end
 
     if params[:id].nil?
-      flash[:notice] = "Cannot merge a new article"
+      flash[:notice] = _("Cannot merge a new article")
       redirect_to :action => 'new'
       return
     end
@@ -27,11 +27,11 @@ class Admin::ContentController < Admin::BaseController
     begin
       @source_article.merge(merge_with.to_i)
     rescue Article::InvalidIDError
-      flash[:notice] = "Merge requires a valid id"
+      flash[:notice] = _("Merge requires a valid id")
       redirect_to :action => 'edit', :id => @id
       return
     rescue Article::SelfMergeError
-      flash[:notice] = "Cannot merge an article with itself"
+      flash[:notice] = _("Cannot merge an article with itself")
       redirect_to :action => 'edit', :id => @id
       return
     end
