@@ -36,6 +36,11 @@ Feature: Merge Articles
   And I press "Merge"
   Then I should be on the edit article page for "G3"
 
+  Scenario: Flash should be shown i successful merge
+  When I fill in "merge_with" with the id for "G4"
+  And I press "Merge"
+  Then I should see "G3 was successfully merged with a different article" in the flash
+
   Scenario: Successfully merge two articles
   When I fill in "merge_with" with the id for "G4"
   And I press "Merge"
@@ -52,9 +57,11 @@ Feature: Merge Articles
   Scenario: I should gracefully fail when merging without specifying a target id
   When I press "Merge"
   Then I should be on the edit article page for "G3"
+  And I should see "Merge requires a valid id" in the flash
 
   Scenario: I should gracefully fail when merging with a bogus target id
   When I fill in "merge_with" with "foobar"
   And I press "Merge"
   Then I should be on the edit article page for "G3"
+  And I should see "Merge requires a valid id" in the flash
 

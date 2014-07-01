@@ -17,9 +17,7 @@ Background: The blog has been set up
   Scenario: I should be able to create a new category
     When I fill in "Name" with "G4"
     And  I press "Save"
-    Then show me the page
     And I should see the category "G4"
-#   And I should see the flash notice "Category was successfully saved."
 
   Scenario: I should gracefully cancel creation of a new category
 

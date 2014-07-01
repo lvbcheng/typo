@@ -11,7 +11,6 @@ Feature: A non-admin should not be able to merge articles
   And I am logged in as "HerbCain" with password "bbbbb"
   
   Scenario:
-  Then show me the page
   When I follow "All Articles" within "div.sidebar"
   And I follow "G1"
   Then I should not see "Merge"

@@ -298,3 +298,6 @@ Then /^(?:|I )should see the category "(.*)"$/ do |cname|
   page.should have_content(cname)
 end
 
+Then /^(?:|I )should see "(.*?)" in the flash$/ do |arg1|
+  page.find('span.notice').text == arg1
+end
