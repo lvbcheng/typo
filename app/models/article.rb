@@ -95,7 +95,7 @@ class Article < Content
 
     self.body = self.body + target_article.body
 
-    target_article.feedback.all.each { |c| self.feedback << c }
+#    target_article.feedback.all.each { |c| self.feedback << c }
     target_article.comments.all.each { |c| self.comments << c }
 
     self.save
